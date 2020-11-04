@@ -14,18 +14,18 @@ import javax.validation.ConstraintViolationException;
 public class GlobalExceptionHandler {
     @ExceptionHandler(UserExitsException.class)
     public ResponseEntity<ErrorResultDto> handle(UserExitsException ex) {
-        return getResponseEntity(ex.getMessage());
+        return getResponseEntity(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
     @ExceptionHandler(LoginMessageErrorException.class)
     public ResponseEntity<ErrorResultDto> handle(LoginMessageErrorException ex) {
-        return getResponseEntity(ex.getMessage());
+        return getResponseEntity(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResultDto> handle(MethodArgumentNotValidException ex) {
         String errorMessage = ex.getBindingResult().getFieldError().getDefaultMessage();
-        return getResponseEntity(errorMessage);
+        return getResponseEntity(HttpStatus.BAD_REQUEST, errorMessage);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
@@ -35,11 +35,11 @@ public class GlobalExceptionHandler {
             errorMessage.append(constraint.getMessage()).append(" ");
         }
 
-        return getResponseEntity(errorMessage.toString().trim());
+        return getResponseEntity(HttpStatus.BAD_REQUEST, errorMessage.toString().trim());
     }
 
-    private ResponseEntity<ErrorResultDto> getResponseEntity(String errorMessage) {
-        ErrorResultDto errorResult = new ErrorResultDto(errorMessage);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResult);
+    private ResponseEntity<ErrorResultDto> getResponseEntity(HttpStatus httpStatus, String errorMessage) {
+        ErrorResultDto errorResult = new ErrorResultDto(httpStatus.value(), errorMessage);
+        return ResponseEntity.status(httpStatus).body(errorResult);
     }
 }

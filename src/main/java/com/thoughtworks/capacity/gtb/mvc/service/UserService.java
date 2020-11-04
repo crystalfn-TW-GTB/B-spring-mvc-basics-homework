@@ -8,12 +8,11 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicStampedReference;
 
 @Service
 public class UserService {
-    private Map<String, UserDto> userMap = new HashMap<>();
-    private AtomicInteger userId = new AtomicInteger(1);
+    private final Map<String, UserDto> userMap = new HashMap<>();
+    private final AtomicInteger userId = new AtomicInteger(1);
 
     public void register(UserDto userDto) {
         String userName = userDto.getUsername();
