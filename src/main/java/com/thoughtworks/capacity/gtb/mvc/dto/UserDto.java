@@ -20,7 +20,7 @@ public class UserDto {
     @NotEmpty(message = "用户名不为空")
     @Size(min = 3, max = 10, message = "用户名不合法，用户名长度应为3到10位")
     @Pattern(regexp = "^\\w+$", message = "用户名不合法，用户名只能由字母、数字或下划线组成")
-    private String name;
+    private String username;
 
     @NotEmpty(message = "密码不为空")
     @Size(min = 5, max = 12, message = "密码不合法，密码长度应为5到12位")
